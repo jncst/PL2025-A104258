@@ -1,0 +1,23 @@
+Lista ordenada de compositores:
+Bach, Johann Michael
+Boyvin, Jacques
+Bull, John
+Estevao de Brito
+John IV
+Manuel Cardoso
+Manuel Rodriguez Coelho
+
+Distribuição das obras por período:
+Renascimento: 1
+Medieval: 4
+Contemporâneo: 1
+Século XX: 1
+
+Obras por período:
+Renascimento: Estampes
+Medieval:          clarinet and piano
+Impromptu, Op. 29
+Mazurkas, Op. 30
+Serenade for Strings
+Contemporâneo: Impromptu, Op. 36
+Século XX:          poems

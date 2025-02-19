@@ -1,12 +1,24 @@
+import re
+
 def ler_dataset(file_name):
 
-    with open(file_name, "r", encoding="utf-8") as f:       # ler apenas para leitura
-        linhas = f.readlines()
+    with open(file_name, "r", encoding="utf-8-sig") as f:       # ler apenas para leitura
+        linhas = f.read().splitlines()
     
-    cabecalho = linhas[0].strip().split(";")  # ; é o separador usado
-    dados = [linha.strip().split(";") for linha in linhas[1:]]      # strip remove espaços em branco e new lines oelo meio
+    dados = []
+
+    # Expressão regular para capturar os campos ignorando a descrição
+    padrao = r'([^;]+);(?:".*?"|.*?);\d*;([^;]*);([^;]*);[^;]*;.*?(?:\n|$)'
+
+    for linha in linhas[1:]:
+
+        match = re.search(padrao, linha)
+
+        if match:
+            nome, periodo, compositor = match.groups()
+            dados.append((nome, periodo, compositor))
     
-    return (cabecalho, dados)
+    return dados
 
 def processar_dados(dados):
 
@@ -16,7 +28,7 @@ def processar_dados(dados):
 
     for linha in dados:
 
-        nome, _, _, periodo, compositor, _, _ = linha
+        nome, periodo, compositor = linha
 
         compositores.add(compositor)        # adicionar compositor à lista
 
@@ -35,21 +47,21 @@ def escrever_resultados(compositores, distPeriodo, obrasPeriodo):
     with open("output.txt", "w", encoding="utf-8") as f:       # módulo para ler um ficheiro como input
 
         f.write("Lista ordenada de compositores:\n")
-        f.write(compositores + "\n\n")
+        f.write("\n".join(compositores) + "\n\n")
 
         f.write("Distribuição das obras por período:\n")
         for periodo,nobras in distPeriodo.items():
-            f.write(periodo + ": " + nobras + "\n")
+            f.write(periodo + ": " + str(nobras) + "\n")
         f.write("\n")
 
         f.write("Obras por período:\n")
         for periodo, obras in obrasPeriodo.items():
-            f.write(periodo + ": " + obras + "\n")
+            f.write(periodo + ": " + "\n".join(obras) + "\n")
 
 def main():
 
     file_name = "obras.csv"
-    cabecalho,dados = ler_dataset(file_name)
+    dados = ler_dataset(file_name)
     compositores, distPeriodo, obrasPeriodo = processar_dados(dados)
     escrever_resultados(compositores, distPeriodo, obrasPeriodo)
 

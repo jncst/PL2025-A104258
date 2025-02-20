@@ -3,19 +3,24 @@ import re
 def ler_dataset(file_name):
 
     with open(file_name, "r", encoding="utf-8-sig") as f:       # ler apenas para leitura
-        linhas = f.read().splitlines()
+        linhas = f.read()
     
+        # Expressão regular para dividir linhas, ignorando newlines dentro de aspas
+    padrao_linhas = r'\n(?=(?:[^"]*"[^"]*")*[^"]*$)'
+    linhas = re.split(padrao_linhas, linhas)        # Divide o conteúdo em linhas corretamente
+
     dados = []
 
-    # Expressão regular para capturar os campos ignorando a descrição
-    padrao = r'([^;]+);(?:".*?"|.*?);\d*;([^;]*);([^;]*);[^;]*;.*?(?:\n|$)'
+        # Expressão regular para dividir corretamente
+    padrao = r';(?=(?:[^"]*"[^"]*")*[^"]*$)'
 
     for linha in linhas[1:]:
 
-        match = re.search(padrao, linha)
+        campos = re.split(padrao, linha)
+        campos = [campo.strip('"') for campo in campos]
 
-        if match:
-            nome, periodo, compositor = match.groups()
+        if len(campos) == 7:
+            nome, _, _, periodo, compositor, _, _ = campos
             dados.append((nome, periodo, compositor))
     
     return dados

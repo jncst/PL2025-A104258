@@ -7,7 +7,7 @@ def ler_ficheiro(nome_ficheiro):
 def convertHeader(file):        # conversor de cabeçalhos
 
     newText = []
-    
+
     for linha in file:
 
         linha = re.sub(r'^(#{1,3}) (.+)$', lambda m: f'<h{len(m.group(1))}>{m.group(2)}</h{len(m.group(1))}>', linha)
@@ -53,31 +53,21 @@ def convertList(file):
                 inList = False          # acabaram os elementos da lista
             newText.append(linha)       # meter as cenas do texto normais
 
-    return '\n'.join(newText)
-
-def convertLink(file):
-
-    newText = []
-
-    for linha in file:
-
-        linha = re.sub(r'\[(.+?)\]\s*\((.+?)\)', r'<a href="\2">\1</a>', linha)
-
-        newText.append(linha)
-
     return newText
 
-def convertImage(file):
+def convertLinkandImage(file):
 
     newText = []
 
     for linha in file:
 
         linha = re.sub(r'!\[(.+?)\]\s*\((.+?)\)', r'<img src="\2" alt="\1"/>', linha)
+        linha = re.sub(r'\[(.+?)\]\s*\((.+?)\)', r'<a href="\2">\1</a>', linha)
 
         newText.append(linha)
 
     return newText
+
 
 def main():
     file = ler_ficheiro("input.md")
@@ -85,8 +75,7 @@ def main():
     file = convertHeader(file)
     file = convertBoldandItalic(file)
     file = convertList(file)
-    file = convertLink(file)
-    file = convertImage(file)
+    file = convertLinkandImage(file)
 
     with open("output.html", "w", encoding="utf-8") as f:
         f.write('\n'.join(file))

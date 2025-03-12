@@ -1,0 +1,20 @@
+[
+    {
+        "cod": "A23",
+        "nome": "água 0.5L",
+        "quant": 8,
+        "preco": 0.7
+    },
+    {
+        "cod": "B11",
+        "nome": "refrigerante 0.5L",
+        "quant": 5,
+        "preco": 1.0
+    },
+    {
+        "cod": "C05",
+        "nome": "sumo 0.33L",
+        "quant": 10,
+        "preco": 0.8
+    }
+]
